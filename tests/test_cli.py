@@ -1,23 +1,35 @@
-# tests/test_cli.py
-
+import subprocess
+import sys
+import os
 import pytest
-from click.testing import CliRunner
-from zeroenv import cli
 
-@pytest.fixture
-def runner():
-    return CliRunner()
+IX_CMD = [sys.executable, "-m", "ix_py"]
 
-def test_cli_entry(runner):
-    result = runner.invoke(cli.main)
-    assert result.exit_code == 0 or result.exit_code == 1
-    assert "Usage:" in result.output
+def test_init_environment(tmp_path):
+    os.chdir(tmp_path)
+    result = subprocess.run(IX_CMD + ["init"], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert ".ix_env" in os.listdir(tmp_path)
 
-def test_init_command_does_not_crash(runner):
-    result = runner.invoke(cli.main, ["init"])
-    assert result.exit_code in [0, 1]  # already exists or success
+def test_install_invalid_package(tmp_path):
+    os.chdir(tmp_path)
+    subprocess.run(IX_CMD + ["init"], check=True)
+    result = subprocess.run(IX_CMD + ["install", "nonexistent-package-xyz123"], capture_output=True, text=True)
+    assert result.returncode != 0
 
-def test_doctor_command_runs(runner):
-    result = runner.invoke(cli.main, ["doctor"])
-    assert result.exit_code in [0, 1]
-    assert "[*] Running diagnostics..." in result.output or "[✓]" in result.output
+def test_lockfile_creation(tmp_path):
+    os.chdir(tmp_path)
+    subprocess.run(IX_CMD + ["init"], check=True)
+    subprocess.run(IX_CMD + ["install", "requests"], check=True)
+    result = subprocess.run(IX_CMD + ["lock"], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "ix-lock.txt" in os.listdir(tmp_path)
+
+def test_run_script(tmp_path):
+    os.chdir(tmp_path)
+    subprocess.run(IX_CMD + ["init"], check=True)
+    script = tmp_path / "hello.py"
+    script.write_text("print('Hello from IX-py')")
+    result = subprocess.run(IX_CMD + ["run", "python", "hello.py"], capture_output=True, text=True)
+    assert result.returncode == 0
+    assert "Hello from IX-py" in result.stdout
