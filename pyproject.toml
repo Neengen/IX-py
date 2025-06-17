@@ -1,19 +1,22 @@
-# pyproject.toml
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "ix-py"
 version = "0.1.0"
-description = "A zero-dependency environment manager that solves Python's dependency hell"
+description = "Zero-dependency Python environment and dependency manager"
 authors = [
-  { name = "Bryce Wooster" }
+    { name = "Bryce Wooster" }
 ]
-license = { text = "MIT" }
-readme = "README.md"
 requires-python = ">=3.8"
+license = { text = "MIT" }
+keywords = ["python", "dependency-manager", "virtualenv", "environment", "pip"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 
 [project.scripts]
-ix = "zeroenv.cli:main"
-
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+ix = "ix_py.__main__:main"
