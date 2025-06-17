@@ -1,53 +1,23 @@
-# Byte-compiled / optimized / DLL files
+# IX-py isolated environment
+.ix_env/
+
+# Python cache and compiled files
 __pycache__/
 *.py[cod]
-*$py.class
+*.pyo
 
-# Virtual environments
-.ixenv/
-.env/
-.venv/
+# Lockfile (can be committed later if desired)
+ix-lock.txt
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
+# Build artifacts
 *.egg-info/
-.installed.cfg
-*.egg
+dist/
+build/
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+# Virtual environments (if user uses venv despite IX-py)
+venv/
+.env/
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
-# Editor files
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# System files
+# OS junk
 .DS_Store
 Thumbs.db
