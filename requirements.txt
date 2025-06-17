@@ -1,0 +1,7 @@
+# requirements.txt
+
+# Core CLI dependencies
+click>=8.1.0
+
+# For testing
+pytest>=7.0.0
